@@ -8,3 +8,5 @@ issue.py
 .DS_Store 
 
 .idea
+.vscode
+.specstory
