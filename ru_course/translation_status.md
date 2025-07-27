@@ -13,7 +13,7 @@
 | [lesson5.slide](../lesson5.slide) | [ru_course/lesson5.slide](lesson5.slide) | ✅ |
 | [lesson6.slide](../lesson6.slide) | [ru_course/lesson6.slide](lesson6.slide) | ✅ |
 | [lesson7.slide](../lesson7.slide) | [ru_course/lesson7.slide](lesson7.slide) | ✅ |
-| [lesson8.slide](../lesson8.slide) | [ru_course/lesson8.slide](lesson8.slide) | ⬜️ |
+| [lesson8.slide](../lesson8.slide) | [ru_course/lesson8.slide](lesson8.slide) | ✅ |
 | [lesson9.slide](../lesson9.slide) | [ru_course/lesson9.slide](lesson9.slide) | ⬜️ |
 | [lesson10.slide](../lesson10.slide) | [ru_course/lesson10.slide](lesson10.slide) | ⬜️ |
 | [lesson11.slide](../lesson11.slide) | [ru_course/lesson11.slide](lesson11.slide) | ⬜️ |
