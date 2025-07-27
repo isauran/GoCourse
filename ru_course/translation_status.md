@@ -19,7 +19,7 @@
 | [lesson11.slide](../lesson11.slide) | [ru_course/lesson11.slide](lesson11.slide) | ✅ |
 | [go_performance.slide](../go_performance.slide) | [ru_course/go_performance.slide](go_performance.slide) | ✅ |
 | [go_python.slide](../go_python.slide) | [ru_course/go_python.slide](go_python.slide) | ✅ |
-| [go_worth_learning.slide](../go_worth_learning.slide) | [ru_course/go_worth_learning.slide](go_worth_learning.slide) | ⬜️ |
+| [go_worth_learning.slide](../go_worth_learning.slide) | [ru_course/go_worth_learning.slide](go_worth_learning.slide) | ✅ |
 | [benchmarks.slide](../benchmarks.slide) | [ru_course/benchmarks.slide](benchmarks.slide) | ⬜️ |
 | [testing.slide](../testing.slide) | [ru_course/testing.slide](testing.slide) | ⬜️ |
 | [kafka.slide](../kafka.slide) | [ru_course/kafka.slide](kafka.slide) | ⬜️ |
