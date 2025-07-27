@@ -4,37 +4,47 @@ Lesson 7
 Tags: golang, go
 
 Перевод команды GoCourse
+Pavel Tišnovský, Jakub Čajka
+Red Hat, Inc.
 https://github.com/RedHatOfficial/GoCourse
+@RedHat
 
+* Источники
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
 
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
 
-*Математика и язык Go
+* Математика + Golang
+- Gonum Numerical Packages
+- Gophernotes
+- Glot
 
-Go можно использовать для математических вычислений и анализа данных. Для этого есть специальные библиотеки.
+* Gonum Numerical Packages
+- библиотеки для:
+- матриц и линейной алгебры
+- статистики
+- распределений вероятностей
+- дифференцирования функций
+- интегрирования функций
+- оптимизации
+- создания и анализа сетей;
 
+* Gophernotes
+- Ядро Go для Jupyter notebooks и nteract
 
-*Gonum
+* Glot
 
-Gonum — это набор библиотек для работы с:
-- матрицами и линейной алгеброй
-- статистикой
-- вероятностями
-- интегралами и производными
-- оптимизацией
-- анализом сетей
-
-
-*Gophernotes
-
-Gophernotes — это ядро Go для Jupyter Notebook. Можно писать и запускать Go-код прямо в тетрадях Jupyter.
-
-
-*Glot
-
-Glot — это онлайн-сервис для запуска Go-кода и построения графиков прямо в браузере.
-
-
-*Итоги
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900
 
 - Go подходит для математики и анализа данных
 - Есть удобные библиотеки и инструменты

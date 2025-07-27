@@ -1,10 +1,23 @@
-Урок 11. Сериализация и конфигурационные файлы в Go
+Урок 11. Маршаллинг и демаршаллинг, файлы конфигурации
 Lesson 11
 27 Jul 2025
 Tags: golang, go
 
 Перевод команды GoCourse
+Pavel Tišnovský
+Red Hat, Inc.
 https://github.com/RedHatOfficial/GoCourse
+@RedHat
+
+* Источники
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
+
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
 
 
 

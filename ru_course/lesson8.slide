@@ -4,75 +4,124 @@ Lesson 8
 Tags: golang, go
 
 Перевод команды GoCourse
+Pavel Tišnovský
+Red Hat, Inc.
 https://github.com/RedHatOfficial/GoCourse
+@RedHat
 
+* Источники
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
 
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
 
-*Что такое дженерики?
+* Дженерики в Go
 
 Дженерики (generics) позволяют писать функции и структуры, которые работают с разными типами данных. Это удобно для создания универсальных алгоритмов, например, списков, деревьев, очередей.
 
 
-*Зачем нужны дженерики?
+* Зачем дженерики?
 
-- Чтобы не писать один и тот же код для разных типов
-- Для создания универсальных структур данных (списки, очереди, деревья)
-- Для удобства и безопасности кода
-
-
-*Пример обычной функции
-
-```
-func PrintInt(x int) {
-    fmt.Println(x)
-}
-```
+- чтобы иметь возможность создать что-то похожее на Numpy в Go
+- настоящие абстрактные типы данных
+- списки
+- деревья
+- очереди с приоритетом
+- ...
 
 
-*Пример дженерик-функции
 
-```
-func Print[T any](x T) {
-    fmt.Println(x)
-}
-```
+* Недженерик функции
 
-Теперь Print можно вызвать с любым типом!
+.play lesson8/01_print.go
 
 
-*Ограничения типов (constraints)
 
-Можно ограничить, какие типы разрешены:
-```
-func Compare[T comparable](a, b T) bool {
-    return a == b
-}
-```
+* Перегруженная функция в Go?
+
+.play lesson8/02_print_overload.go
 
 
-*Компиляция и производительность
 
-- Дженерики проверяются на этапе компиляции
-- Нет лишних преобразований типов
-- Код остаётся быстрым
+* Никаких автоматических преобразований типов
 
-
-*Пример: универсальный список
-
-```
-type List[T any] struct {
-    items []T
-}
-```
+.play lesson8/03_print_no_conversion.go
 
 
-*Итоги
 
-- Дженерики делают код универсальным и удобным
-- Можно писать функции и структуры для любых типов
-- Всё проверяется на этапе компиляции
+* Дженерики, реализованные в runtime
+
+.play lesson8/04_print_interface.go
 
 
-*Не бойтесь пробовать!
 
-Экспериментируйте с дженериками — это современный и мощный инструмент Go!
+* Дженерик функция
+
+.play lesson8/05_generic_print.go
+
+
+
+* Выбор дженерик функции
+
+.play lesson8/06_type_parameter.go
+
+
+
+* Проверки типов на этапе компиляции
+
+.play lesson8/07_type_parameter_check.go
+
+
+
+* Comparable
+
+.play lesson8/08_comparable.go
+
+
+
+* Comparable переменных типов
+
+.play lesson8/09_comparable_variable_types.go
+
+
+
+* Сравнение параметров типов
+
+.play lesson8/10_compare_type_parameters.go
+
+
+
+* Функция Add для integer
+
+.play lesson8/11_add_int.go
+
+
+
+* Функция Add с параметрами типов
+
+.play lesson8/12_add_type_parameters.go
+
+
+
+* Что лучше?
+
+.play lesson8/34_whats_better.go
+
+
+
+* Список
+
+.play lesson8/35_list.go
+
+
+
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900

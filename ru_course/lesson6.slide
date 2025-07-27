@@ -4,75 +4,91 @@ Lesson 6
 Tags: golang, go
 
 Перевод команды GoCourse
+Ivan Nečas <inecas@rehdat.com>
+Red Hat, Inc.
 https://github.com/RedHatOfficial/GoCourse
+@RedHat
 
+* Источники
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
 
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
 
-*Веб-сервисы на Go
+* Веб-сервисы на Go
 
-Go часто используют для создания веб-сервисов и микросервисов. В языке есть всё необходимое для работы с HTTP "из коробки".
+- одна из наиболее распространённых вещей, написанных на go в наше время
+- широко используется в http-микросервисах 
+- богатая поддержка HTTP напрямую [[https://golang.org/pkg/net/http/][в языке]] (батарейки включены)
 
+* Базовый веб-сервер
 
-*Простой веб-сервер
+.play lesson6/web_server.go
 
-В Go очень легко создать свой веб-сервер:
+.play lesson6/web_server_more_control.go /^func main/,/^}/
 
-```
-package main
-import (
-    "fmt"
-    "net/http"
-)
-func handler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintln(w, "Привет, мир!")
-}
-func main() {
-    http.HandleFunc("/", handler)
-    http.ListenAndServe(":8080", nil)
-}
-```
+* Несколько путей
 
+.play lesson6/web_server_multi.go
 
-*Несколько путей (routes)
+* Несколько путей
 
-Можно обрабатывать разные адреса (пути):
-```
-http.HandleFunc("/hello", helloHandler)
-http.HandleFunc("/bye", byeHandler)
-```
+- самый длинный префикс всегда выигрывает
 
+* Инспектирование запросов (классный трюк)
 
-*Получение данных из запроса
+.play lesson6/web_server_inspect.go
 
-- Параметры в адресе (query): `r.URL.Query().Get("name")`
-- Тело запроса (body): `r.Body`
-- JSON: используйте пакет `encoding/json`
+* Парсинг запросов: query
 
+.play lesson6/web_server_params.go
 
-*Ответы, заголовки и коды статуса
+* Парсинг запросов: сырое тело
 
-- Чтобы отправить заголовок: `w.Header().Set("Content-Type", "application/json")`
-- Чтобы отправить код: `w.WriteHeader(404)`
+.play lesson6/web_server_body.go
 
+* Парсинг запросов: json
 
-*HTTP-клиент
+.play lesson6/web_server_json.go
 
-Go позволяет делать HTTP-запросы к другим сайтам:
-```
-resp, err := http.Get("https://example.com")
-```
+* Парсинг запросов: json (2)
 
+.play lesson6/web_server_json_2.go
 
-*Прокси и метрики
+* Заголовки и коды статуса
 
-Можно писать свои прокси-серверы и собирать метрики (например, считать количество запросов).
+.play lesson6/web_server_headers.go
 
+* Коды статуса (2)
 
-*Итоги
+.play lesson6/web_server_status_codes.go
 
-- Go отлично подходит для веба
-- Всё для HTTP уже есть в стандартной библиотеке
-- Можно быстро сделать свой сервер или клиент
+* Клиент
+
+.play lesson6/client.go
+
+* Клиент (post)
+
+.play lesson6/client_post.go /// Params/,/End OMIT/
+
+* Прокси
+
+.play lesson6/proxy.go
+
+* Метрики
+
+.play lesson6/metrics.go
+
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900
 
 
 *Не бойтесь пробовать!
