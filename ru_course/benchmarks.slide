@@ -1,53 +1,159 @@
-Бенчмарки в Go
-Lesson Special
-27 Jul 2025
-Tags: golang, go
+Курс языка Go
+Бенчмарки для программ Go
+01 Jan 2023
+Tags: golang, go, benchmarking
 
-Перевод команды GoCourse
+Pavel Tišnovský
+Red Hat, Inc.
+ptisnovs@redhat.com
 https://github.com/RedHatOfficial/GoCourse
+@RedHat
 
 
 
-*Что такое бенчмарки?
-
-Бенчмарк — это тест, который измеряет скорость работы кода. В Go есть встроенные инструменты для бенчмаркинга.
-
-
-*Как запускать бенчмарки?
-
-- Все бенчмарки пишутся в файлах с суффиксом `_test.go`
-- Функции называются `Benchmark...`
-- Запуск:
-```
-go test -bench=.
-```
+* Sources
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
 
 
-*Пример простого бенчмарка
 
-```
-func BenchmarkAdd(b *testing.B) {
-    for i := 0; i < b.N; i++ {
-        Add(1, 2)
-    }
-}
-```
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
 
 
-*Профилирование
 
-- Можно измерять не только скорость, но и память (`-benchmem`)
-- Для глубокого анализа используйте профилировщик Go (`pprof`)
-
-
-*Советы
-
-- Не измеряйте подготовку данных — используйте `b.StopTimer()` и `b.StartTimer()`
-- Для больших структур сравнивайте передачу по значению и по ссылке
+* Анализ производительности
+- очень важная часть тестирования
+- профилировщик входит в стандартные инструменты Go
+- трейсер также входит в стандартные инструменты Go
 
 
-*Итоги
 
-- Бенчмарки помогают находить "узкие места" в коде
-- В Go всё для этого есть "из коробки"
-- Не бойтесь экспериментировать и измерять производительность!
+* Бенчмарки
+
+- часть стандартных инструментов Go
+- могут комбинироваться с функциями и методами профилирования
+
+
+
+* Простой бенчмарк для карт
+
+.code benchmarks/map_test.go /^package main/,/^type value/
+
+
+
+* Первая часть бенчмарка
+
+.code benchmarks/map_test.go /^func BenchmarkInsertIntoPreallocatedMap/,/^}/
+
+
+
+* Вторая часть бенчмарка
+
+.code benchmarks/map_test.go /^func BenchmarkInsertIntoEmptyMap/,/^}/
+
+
+
+* Запуск бенчмарка
+
+- go help test
+- go test -bench=.
+- go test -bench=. -benchtime=1000x
+
+
+
+* Таймеры
+
+- иногда необходимо подготовить данные/конфигурацию для бенчмарков
+- а также проверить выходные данные, генерируемые бенчмарками
+- шаги настройки/очистки/проверки иногда являются ресурсоемкими операциями
+- -> лучше не измерять эти шаги в бенчмарке
+- b.StopTimer()
+- b.StartTimer()
+
+
+
+* Большие структуры
+
+.code benchmarks/parameter_value_reference/conf/config.go /^type Config/,/^}/
+
+
+
+* Большие структуры (2)
+
+.code benchmarks/parameter_value_reference/conf/config.go /^type StorageConfiguration/,/^}/
+
+
+
+* Большие структуры (3)
+
+.code benchmarks/parameter_value_reference/conf/config.go /^type KafkaConfiguration/,/^}/
+
+
+
+* Большие структуры (4)
+
+.code benchmarks/parameter_value_reference/conf/config.go /^func GetStorageConfigurationByValue/,/^}/
+.code benchmarks/parameter_value_reference/conf/config.go /^func GetStorageConfigurationByReference/,/^}/
+.code benchmarks/parameter_value_reference/conf/config.go /^func \(configuration ConfigStruct\) GetStorageConfigurationByValue/,/^}/
+.code benchmarks/parameter_value_reference/conf/config.go /^func \(configuration \*ConfigStruct\) GetStorageConfigurationByReference/,/^}/
+
+
+
+* Передача по значению/ссылке (1)
+
+.code benchmarks/parameter_value_reference/conf/config_benchmark_test.go /^package conf_test/,/^func loadConfiguration/
+
+
+
+* Передача по значению/ссылке (2)
+
+.code benchmarks/parameter_value_reference/conf/config_benchmark_test.go /^func BenchmarkGetStorageConfigurationFunctionByValue/,/^}/
+
+
+
+* Передача по значению/ссылке (3)
+
+.code benchmarks/parameter_value_reference/conf/config_benchmark_test.go /^func BenchmarkGetStorageConfigurationFunctionByReference/,/^}/
+
+
+
+* Передача по значению/ссылке (4)
+
+.code benchmarks/parameter_value_reference/conf/config_benchmark_test.go /^func BenchmarkGetStorageConfigurationMethodByValue/,/^}/
+
+
+
+* Передача по значению/ссылке (5)
+
+.code benchmarks/parameter_value_reference/conf/config_benchmark_test.go /^func BenchmarkGetStorageConfigurationMethodByReference/,/^}/
+
+
+
+* Профиль памяти
+
+- go test -bench=. -benchmem -memprofile profile.out
+- go tool pprof profile.out
+- go tool pprof -web profile.out
+- go tool pprof -http localhost:8080 profile.out
+
+
+
+* Профиль CPU
+
+- go test -bench=. -benchmem -cpuprofile profile.out
+- go tool pprof profile.out
+- go tool pprof -web profile.out
+- go tool pprof -http localhost:8080 profile.out
+
+
+
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900

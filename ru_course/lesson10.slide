@@ -21,65 +21,155 @@ https://github.com/RedHatOfficial/GoCourse
 
 
 
-*Работа с базами данных в Go
+* Использование
 
-Go поддерживает работу с разными базами данных через стандартную библиотеку и сторонние пакеты.
+.code lesson10/sql.go
 
+* Типы запросов
 
-*Стандартная библиотека
+- *Exec*: когда строки не возвращаются
+.code lesson10/sql_exec.go
 
-- Пакет `database/sql` — универсальный интерфейс для работы с SQL-базами
-- Для каждой СУБД нужен свой драйвер (например, для PostgreSQL, MySQL)
+- *QueryRow*: когда ожидается максимум одна строка
+.code lesson10/sql_query_row.go
 
+* Типы запросов
+- *Query*: когда возвращается несколько значений
+.code lesson10/sql_query.go
 
-*Основные типы запросов
+* GORM
 
-- `Exec` — когда не нужно получать строки (например, INSERT, UPDATE)
-- `QueryRow` — когда ожидается одна строка
-- `Query` — когда нужно получить много строк
+- полнофункциональная ORM
+- высокоуровневая
+- [[https://gorm.io/index.html][страница проекта GORM]]
 
+* Демонстрация
 
-*GORM — удобная работа с базой
+.code lesson10/gorm_showcase.go
 
-- GORM — это популярная библиотека для работы с базами данных на Go
-- Позволяет удобно создавать, читать, обновлять и удалять записи (CRUD)
-- Поддерживает связи между таблицами (один-ко-многим, многие-ко-многим)
-- Автоматически создаёт таблицы по структурам Go
+* Модель
 
+.code lesson10/gorm_model.go
 
-*Пример модели
+* ID
 
-```
-type User struct {
-    ID   uint
-    Name string
-}
-```
+.code lesson10/gorm_id.go
 
+* ID (переопределённый)
 
-*CRUD-операции
+.code lesson10/gorm_overwritten_id.go
 
-- Create — создание записей
-- Read — чтение записей
-- Update — обновление
-- Delete — удаление
+* Tabler
 
+.code lesson10/gorm_tabler.go
 
-*Особенности GORM
+* Snake Case
 
-- По умолчанию поле `ID` — это первичный ключ
-- Названия таблиц и столбцов можно настраивать
-- Есть поддержка "мягкого удаления" (soft delete)
-- Можно выполнять "сырые" SQL-запросы
+.code lesson10/gorm_snake_case.go
 
+* Теги колонок
 
-*Итоги
+.code lesson10/gorm_column_tags.go
 
-- Go позволяет работать с базами данных через стандартную библиотеку и GORM
-- GORM делает работу с базой проще и удобнее
-- Можно быстро создавать и изменять данные, а также строить связи между таблицами
+* CreatedAt
 
+.code lesson10/gorm_created_at.go
 
-*Не бойтесь пробовать!
+* CreatedAt отключён
 
-Экспериментируйте с подключением к разным базам данных и работой с ними через Go!
+.code lesson10/gorm_disabled_created_at.go
+
+* Создание
+
+.code lesson10/gorm_create.go
+
+* Создание нескольких записей
+
+.code lesson10/gorm_create_multiple.go
+
+* Создание с выбранными полями
+
+.code lesson10/gorm_create_selected_fields.go
+
+* Чтение
+
+.code lesson10/gorm_read.go
+
+* Чтение по первичному ключу
+
+.code lesson10/gorm_read_pk.go
+
+* Чтение всех записей
+
+.code lesson10/gorm_read_all.go
+
+* Условия чтения
+
+.code lesson10/gorm_read_conditions.go
+
+* Save и Create
+
+.code lesson10/gorm_save_create.go
+
+* Save
+
+.code lesson10/gorm_save.go
+
+* Обновление одного поля
+
+.code lesson10/gorm_update_single.go
+
+* Обновление нескольких полей
+
+.code lesson10/gorm_update_multiple.go
+
+* Пакетное обновление
+
+.code lesson10/gorm_update_batch.go
+
+* Удаление по первичному ключу
+
+.code lesson10/gorm_delete_pk.go
+
+* Пакетное удаление
+
+.code lesson10/gorm_batch_delete.go
+
+* Пакетное удаление с первичными ключами
+
+.code lesson10/gorm_batch_delete_with_pk.go
+
+* Мягкое удаление
+
+.code lesson10/gorm_soft_delete.go
+
+* Объявление связи "Один ко многим"
+
+.code lesson10/gorm_has_many_declare.go
+
+* Получение связанных записей
+
+.code lesson10/gorm_has_many_retrieve.go
+
+* Объявление связи "Многие ко многим"
+
+.code lesson10/gorm_many_to_many_declare.go
+
+* Получение связанных записей
+
+.code lesson10/gorm_many_to_many_retrieve.go
+
+* Raw SQL
+
+.code lesson10/gorm_raw_sql.go
+
+* Raw SQL Exec
+
+.code lesson10/gorm_raw_sql_exec.go
+
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900

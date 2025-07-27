@@ -21,72 +21,68 @@ https://github.com/RedHatOfficial/GoCourse
 
 
 
-*Тестирование в Go
+* Тестирование и бенчмаркинг в Go
+- Unit test "фреймворк" интегрирован в команду Go
+- `go` `test`
+- (Микро)Benchmark "фреймворк" также является его частью
+- `go` `test` `-bench` `.`
+- пакет `testing`
+- код должен быть "vetable", проходить проверку `go` `vet`
 
-Go поддерживает тесты "из коробки". Для запуска тестов используйте команду:
-```
-go test
-```
+* Тесты
+- в файлах `_test.go`
+- все функции `Test*(t` `*testing.T)` выполняются
 
-- Тесты пишутся в файлах, которые заканчиваются на `_test.go`.
-- Функции тестов называются `Test...` и принимают параметр `*testing.T`.
+* Test main
+- `func` `TestMain(m` `*testing.M)`
+- `m.Run`
+- предоставляет возможность настройки, передачи CLI флагов,...
+- выполнения тестов, которые не подходят под базовый фреймворк, и т.д.
+- посмотрите misc/cgo GC тесты
 
+* Бенчмарки
+- в файлах `_test.go`
+- все функции `Benchmark*(b` `*testing.B)` выполняются
+- можно тестировать не только производительность(`-bench`), но и использование памяти(`-benchmem`)
 
-*Бенчмарки (измерение скорости)
+* Assertions в Go
+- `assert` не является ключевым словом в Go
+- но существуют assert-подобные функции и методы
+- сторонние библиотеки
 
-Go позволяет измерять скорость работы кода:
-```
-go test -bench .
-```
-- Бенчмарки — это функции `Benchmark...` с параметром `*testing.B`.
-- Можно измерять не только скорость, но и память (`-benchmem`).
+* Assertions в Go (factorial)
+.code testing/assertions/assertions1/factorial.go
 
+* Assertions в Go (factorial)
+.code testing/assertions/assertions1/factorial_test.go
 
-*Проверки (assertions)
+* Больше assertions-подобных функций
 
-В Go нет ключевого слова `assert`, но можно использовать обычные условия или сторонние библиотеки для проверки результатов.
+.code testing/assertions/assertions2/factorial_test.go
 
+* Использование "Dot import"
+.code testing/assertions/assertions3/factorial_test.go
 
-*CGo — работа с C-кодом
+* CGO
+- связь языков Go и C
+- в обоих направлениях
+- прост в использовании
+- снижает производительность
+- может понадобиться для интеграции с существующими библиотеками
+- используйте осторожно
 
-CGo позволяет вызывать C-функции из Go и наоборот. Это нужно редко, но иногда бывает полезно.
-- Используйте CGo только если нет решения на Go.
-- Не забывайте освобождать память, выделенную в C.
+* CGO - пример
+.code lesson5/cgo-inlinec/main.go HLcgo
 
+* CGO - пример
+.code lesson5/cgo-strings/main.go
 
-*Встроенные инструменты Go
+* CGO - Math test and benchmark
+.code lesson5/cgo-math-test-bench/main.go
 
-- `go vet` — ищет подозрительные места и ошибки
-- `go fmt` — автоматически форматирует код
-- `go fix` — помогает обновить код для новых версий Go
-
-
-*Внешние инструменты
-
-- `gosec` — проверка безопасности
-- `golangci-lint` — объединяет много проверок
-- `gocyclo`, `goconst`, `errcheck` и другие
-
-
-*Управление зависимостями
-
-- Раньше: GOPATH, vendoring, разные инструменты
-- Сейчас: Go modules (`go.mod`)
-- Для работы с зависимостями используйте:
-```
-go mod init
-```
-- Все зависимости и их версии хранятся в файле `go.mod`
-
-
-*Итоги
-
-- Тесты и бенчмарки — важная часть Go
-- Есть встроенные и внешние инструменты для проверки и форматирования кода
-- Для работы с C-кодом используйте CGo, но осторожно
-- Управляйте зависимостями через Go modules
-
-
-*Не бойтесь пробовать!
-
-Пишите тесты, экспериментируйте с инструментами — это поможет стать лучше программистом!
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900

@@ -1,56 +1,163 @@
-Тестирование в Go
-Lesson Special
-27 Jul 2025
-Tags: golang, go
+Тестирование в языке Go
+Фреймворки тестирования Golang
+02 Nov 2019
+Tags: golang, go, testing
 
-Перевод команды GoCourse
+Pavel Tišnovský
+Red Hat, Inc.
+ptisnovs@redhat.com
 https://github.com/RedHatOfficial/GoCourse
+@RedHat
 
 
 
-*Зачем нужны тесты?
-
-Тесты помогают убедиться, что программа работает правильно и не ломается при изменениях.
-
-
-*Виды тестов в Go
-
-- Модульные (unit) тесты
-- Тесты производительности (benchmarks)
-- Тесты API и интеграционные
+* Sources
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
 
 
-*Как писать тесты в Go?
 
-- Тесты пишутся в файлах с суффиксом `_test.go`
-- Функции тестов называются `Test...` и принимают параметр `*testing.T`
-- Запуск тестов:
-```
-go test
-```
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
 
 
-*Пример простого теста
 
-```
-func TestAdd(t *testing.T) {
-    got := Add(2, 2)
-    want := 4
-    if got != want {
-        t.Errorf("Ожидалось %d, а получилось %d", want, got)
-    }
-}
-```
+* Фреймворки тестирования Golang
+- Модульное тестирование
+- BDD тестирование
+- Expect-подобные фреймворки и библиотеки
+- Тестирование REST API
+- Анализ производительности
 
 
-*Советы
 
-- Используйте "табличные" тесты для проверки разных входных данных
-- Для сложных случаев используйте сторонние библиотеки (`testify`, `gomega` и др.)
+* Пирамида тестов и конус мороженого
+
+[[https://watirmelon.files.wordpress.com/2018/02/automated-testing-pyramid-with-eye.jpg?w=840]]
+[[https://watirmelon.files.wordpress.com/2018/02/software-testing-icecream-cone-antipattern.jpg?w=840]]
 
 
-*Итоги
 
-- В Go тесты — это просто и удобно
-- Пишите тесты для своего кода — это поможет избежать ошибок
-- Не бойтесь экспериментировать с разными видами тестов!
+* Модульное тестирование
+- Стандартный пакет `testing`
+- Вспомогательный инструмент `go-carpet`
+- Расширения (`testify`)
+- Альтернативный пакет `oglematchers`
+- Комбинация `ogletest` и `oglematchers`
+- Пакет `assertions`
+- Пакет `goblin`
+
+
+
+* Стандартный пакет "testing"
+- Основан на пакете [[https://pkg.go.dev/testing]]
+- Исходные файлы, содержащие тесты, должны заканчиваться на `_test.go`
+- Каждый тест должен быть сохранен в функции с именем `func` `TestXxx(*testing.T)`
+- Базовые методы для структуры `testing.T` (тип данных)
+
+
+
+* Стандартный пакет "testing"
+- В пакете `testing` нет "утверждений"!
+- `Log(args` `...interface{})`
+- `Skip(args` `...interface{})`
+- `Error(args` `...interface{})`
+- `Fatal(args` `...interface{})`
+- `Fail()`
+- `FailNow()`
+
+
+
+* Стандартный пакет "testing"
+- Форматирование вывода
+- `Logf(format` `string,` `args` `...interface{})`
+- `Skipf(format` `string,` `args` `...interface{})`
+- `Errorf(format` `string,` `args` `...interface{})`
+- `Fatalf(format` `string,` `args` `...interface{})`
+
+
+
+* Файлы модульных тестов
+- Обычно хранятся в `package_test.go`
+- Могут быть разделены на столько файлов, сколько необходимо
+- Так называемые табличные тесты
+- Обычно используется массив/срез структур с входными данными и ожидаемым выводом
+
+
+
+* Как запустить модульные тесты
+- Базовая команда: `go` `test`
+- Обычно: `go` `test` `./...`
+- Можно указать регулярное выражение для выбора только подмножества тестов
+
+
+
+* Простейший пример
+
+.code testing/testing/tests01/add.go
+
+* Простейший тест
+
+.code testing/testing/tests01/add_test.go
+
+* Запуск тестов и результат
+
+.code testing/testing/tests01/run.txt
+
+* Табличный тест
+
+.code testing/testing/tests02/add_test.go
+
+* Запуск табличного теста
+
+.code testing/testing/tests02/run.txt
+
+* Простейший пример с некорректными данными
+
+.code testing/testing/tests03/add_test.go
+
+* Запуск теста с некорректными данными
+
+.code testing/testing/tests03/run.txt
+
+* Подтесты
+
+.code testing/testing/tests04/add_test.go
+
+* Запуск подтестов
+
+.code testing/testing/tests04/run.txt
+
+* Пропуск тестов
+
+.code testing/testing/tests05/add_test.go
+
+* Запуск с пропуском
+
+.code testing/testing/tests05/run.txt
+
+* Покрытие кода тестами
+
+go test -cover
+
+* Покрытие кода тестами с деталями
+
+go test -cover -coverprofile=coverage.out
+go tool cover -html=coverage.out
+
+* Тестирование производительности
+
+- Бенчмарки являются частью стандартных инструментов Go
+- Могут комбинироваться с функциями и методами профилирования
+
+
+
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900

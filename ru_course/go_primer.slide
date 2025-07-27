@@ -1,54 +1,117 @@
-Введение в язык Go для начинающих
-Lesson Special
-27 Jul 2025
+Введение в язык Go
+Pavel Tišnovský <golang@centrum.cz>
+12 Jun 2024
 Tags: golang, go
 
-Перевод команды GoCourse
-https://github.com/RedHatOfficial/GoCourse
+Red Hat, Inc.
 
+* Sources
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
 
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
 
-*Что такое Go?
+* Gopher
 
-Go — это современный язык программирования, который придумали в компании Google. Он простой, быстрый и удобный для новичков.
+.image ./common/gopher.jpg _ 600
 
+* Ключевые слова Go
 
-*Почему стоит учить Go?
+   break         case       chan        const           continue
+   default       defer      else        fallthrough     for
+   func          go         goto        if              import
+   interface     map        package     range           return
+   select        struct     switch      type            var
 
-- Простые правила и понятный синтаксис
-- Быстро работает
-- Подходит для создания сайтов, серверов, программ для работы с данными
+* Пакеты и импорты
+- Строительные блоки программы ("библиотеки")
+- Импортируются другими программами
+- Имя пакета - последний элемент пути импорта
+- Стандартные пакеты: [[https://golang.org/pkg/]]
 
+.code lesson1/packages.go
 
-*Как выглядит программа на Go?
+* Hello world в Go
+.play lesson1/hello3.go
+.play lesson1/hello.go
+.play lesson1/hello2.go
 
-```
-package main
+* Синтаксис
+- Эволюционировал от C
+- Объявления в постфиксе
+- Экспортируемые символы начинаются с заглавной буквы
+- [[https://blog.golang.org/gos-declaration-syntax]]
 
-import "fmt"
+.code lesson1/syntax_c.go
+.code lesson1/syntax_go.go
 
-func main() {
-    fmt.Println("Привет, мир!")
-}
-```
+* Функции
+.play lesson1/functions.go
 
+* Множественные возвращаемые значения
+.play lesson1/functions2.go
 
-*Как запустить программу?
+* Именованные возвращаемые значения
+.play lesson1/functions3.go
 
-1. Скопируйте код в файл с именем `main.go`
-2. Откройте терминал и перейдите в папку с этим файлом
-3. Введите команду:
+* Переменные
+.play lesson1/vars.go
 
-```
-go run main.go
-```
+* Типы
+- Похожи на C
+- Нет автоматических приведений
+- Вывод типов && типы по умолчанию
+- Каждый тип имеет четкое нулевое значение (0, false, "")
+.code lesson1/types.go
 
+* Преобразования типов
+- Нет автоматических приведений
+.play lesson1/casts.go
 
-*Не бойтесь ошибок!
+* Константы
+.play lesson1/const.go
 
-Ошибки — это нормально. На ошибках учатся все. Если что-то не работает — попробуйте ещё раз или спросите у других.
+* Условия
+- Как и для цикла for, позволяет инициализирующее выражение
+- Переменные, объявленные там, не существуют вне блока if
+- Нет скобок вокруг условного выражения
+- Блоки обязательны! (вспомните Apple Goto fail)
+.play lesson1/if.go
 
+* Выражение else
+- Переменные, объявленные в инициализирующем выражении, существуют в блоке else
+- Else на той же строке, что и закрывающая скобка
+.play lesson1/if2.go
 
-*Вперёд!
+* Выражение switch
+- Снова позволяет инициализирующее выражение
+- Как набор выражений if-else
+- Оценивается сверху вниз, выполняется первый успешный case
+- Поэтому нет выражения break
+.play lesson1/switch.go
 
-Начнём изучать Go шаг за шагом. Всё получится!
+* Выражение switch 2
+- Позволяет неконстантные и нецелочисленные значения
+.play lesson1/switch2.go
+
+* Выражение switch без выражения
+- Эквивалентно switch true
+- Чистый способ написать длинные цепочки if-then-else
+.play lesson1/switch3.go
+
+* Циклы
+- Единственная конструкция цикла в Go
+- Семантика тройного цикла C for 
+- Инициализация, условие, пост-выражение все опциональны
+.play lesson1/for.go
+
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900

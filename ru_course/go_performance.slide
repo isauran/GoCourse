@@ -1,47 +1,266 @@
-Производительность Go: простые советы
+Трюки производительности Go: Как я перестал беспокоиться и полюбил Go в продакшене
 Lesson Special
-27 Jul 2025
-Tags: golang, go
+01 Jan 2023
+Tags: golang, go, performance
 
-Перевод команды GoCourse
+Pavel Tišnovský
+Red Hat, Inc.
+ptisnovs@redhat.com
 https://github.com/RedHatOfficial/GoCourse
+@RedHat
 
 
 
-*Как ускорить программы на Go?
-
-Go — быстрый язык, но иногда можно сделать код ещё быстрее с помощью простых приёмов.
-
-
-*Передавайте большие структуры по ссылке
-
-- Если структура большая, передавайте её в функции через указатель (`*Type`), а не копируйте.
-- Это экономит память и ускоряет работу.
+* Sources
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
 
 
-*Используйте срезы вместо массивов
 
-- Срезы (`[]Type`) обычно быстрее и удобнее, чем массивы.
-- Можно заранее выделить нужную память с помощью `make`.
-
-
-*Предварительное выделение памяти для map
-
-- Если знаете, сколько элементов будет в map, используйте `make(map[Type]Type, size)` — это ускоряет работу.
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
 
 
-*Профилируйте код
 
-- Не оптимизируйте "на глаз" — используйте встроенные инструменты профилирования Go (`go test -bench`, `pprof`).
+* Простые, но полезные улучшения производительности в Go
+
+- Компилятор Go довольно прямолинеен (= простой)
+- Ему нужна помощь от разработчиков
+
+* Некоторые интересные области, подкрепленные опытом
+
+1. Передавайте структуры по ссылке, а не по значению
+1. Передавайте приемники по ссылке, а не по значению
+1. Предварительное выделение памяти для карт
+1. Массивы против срезов
+
+- Большинство упомянутых выше вещей не являются идиоматичными!
 
 
-*Итоги
 
-- Передавайте большие структуры по ссылке
-- Используйте срезы и предварительное выделение памяти
-- Профилируйте код, чтобы находить "узкие места"
+* Передача структур по ссылке, а не по значению
+
+- Все типы данных передаются по значению в функции и методы
+    - это хорошо с точки зрения "пространства состояний"
+    - не очень хорошо с точки зрения производительности
+- Java/Python имеют другую семантику!
+- И никакого хорошего решения вроде `const` и `mut` в Go не существует
 
 
-*Не бойтесь пробовать!
 
-Экспериментируйте с разными способами оптимизации и измеряйте результат — так вы научитесь писать быстрые программы!
+* Определение проблемы
+
+- Большие структуры передаются по значению везде в коде
+    - даже во внутренних циклах
+- Это вызывает накладные расходы, которых очень легко избежать
+    - но за счет: используется неправильная семантика
+
+
+
+* Реальный пример
+
+.code optimizations/config.toml
+
+
+
+* Представление такой структуры в Go
+
+.code optimizations/config_struct_1.go
+
+* Подструктуры
+
+.code optimizations/config_struct_2.go
+
+.code optimizations/config_struct_3.go
+
+
+
+* 'Getter', используемый в коде
+
+.code optimizations/getter_by_value.go
+
+- Плюсы
+    - довольно идиоматично
+    - в основном говорит, что структура неизменяема на 1-м уровне
+- Минусы
+    - структура передается по значению
+    - размер структуры около 700 байт!
+
+
+
+* Грязное решение
+
+- единственное возможное решение в Go
+    - другая семантика:
+        - передача по ссылке -> структура может быть изменена внутри
+- к сожалению, мы не можем различить `const` и `mut`
+    - мутация (или отсутствие мутации) должна проверяться модульными тестами
+
+.code optimizations/getter_by_reference.go
+
+
+
+* Стоит ли это делать?
+
+.code optimizations/benchmark_1_1.go
+
+* Вспомогательная функция для загрузки конфигурации
+
+.code optimizations/benchmark_1_2.go
+
+* Вспомогательная функция для загрузки конфигурации
+
+.code optimizations/benchmark_1_3.go
+
+* Фактические бенчмарки
+
+.code optimizations/benchmark_1_4.go
+
+
+* Результаты бенчмарков
+
+.code optimizations/benchmark_results_1.go
+
+
+* Результаты бенчмарков
+
+- 13.20 ns/op против 0.2405 ns/op
+- Это увеличение скорости на 5488% :)
+    - устранение операции memcpy
+
+
+* Графический вывод
+
+.image images/benchmark1.png
+
+
+* Табличный вывод
+
+.image images/benchmark2.png
+
+
+
+* Все еще актуально?
+
+- 0.2405 ns против 13.20 ns с точки зрения CPU против человека
+
+.image images/computer_latency.png
+
+
+
+* Память становится "медленнее"
+
+.image images/cpu.png
+
+
+
+* Что насчет методов?
+
+- Та же проблема + простое исправление
+
+.code optimizations/methods_comparison.go
+
+
+
+* Бенчмарк для методов
+
+.code optimizations/methods_benchmark.go
+
+
+
+* Запуск бенчмарка
+
+.code optimizations/methods_benchmark_results.go
+
+
+
+* Предварительное выделение памяти для карт
+
+- В Go можно указать количество элементов карты при выделении памяти карты
+
+.code optimizations/map_preallocation.go
+
+- Не строго необходимо, поэтому разработчики выбрали "подход Python"
+- Имеет ли смысл пытаться оценить количество элементов?
+- Кто знает? Вероятно, только бенчмарк...
+
+
+
+* Бенчмарк
+
+.code optimizations/map_benchmark.go
+
+
+
+* Результаты бенчмарка
+
+.code optimizations/map_benchmark_results.go
+
+* Графический вывод
+
+.image images/profiler1.png
+
+
+
+* Карты с большими ключами
+
+- Ключи могут быть любого типа в Go
+- Поэтому ключи могут быть довольно большими (представьте структуры)
+
+.code optimizations/large_keys.go
+
+
+
+* Бенчмарк
+
+.code optimizations/large_keys_benchmark.go
+
+
+
+* Результаты
+
+.code optimizations/large_keys_results.go
+
+
+
+* Массивы против срезов
+
+- Массивы передаются по значению
+- Срезы передаются по ссылке (технически)
+- Срезы более гибкие
+
+.code optimizations/arrays_vs_slices.go
+
+
+
+* Бенчмарк массивов против срезов
+
+.code optimizations/arrays_slices_benchmark.go
+
+
+
+* Результаты
+
+.code optimizations/arrays_slices_results.go
+
+
+
+* SIMD поддержка в Go
+
+- Сегодня ситуация не идеальная
+    - мы не инвестируем в этот подход
+    - в любом случае большая часть обработки выполняется с UTF-8 символами
+
+.image images/simd.png
+
+
+
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900

@@ -1,64 +1,272 @@
-Kafka и Go: просто о главном
-Lesson Special
-27 Jul 2025
-Tags: golang, go
+Облачная нативная Kafka для Gophers
 
-Перевод команды GoCourse
-https://github.com/RedHatOfficial/GoCourse
+Руководство по использованию Kafka и Strimzi в Golang
+11 Nov 2024
+
+Tags: golang, go, kafka, strimzi
+
+Aykut Bulgu <aykut@systemcraftsman.com>
+Red Hat, Inc. | System Craftsman
+https://www.systemcraftsman.com
+@SystemCraftsman
+
+* Обо мне
+
+.image ./kafka/images/back_to_the_engineering.png _ 700
+
+* Обо мне
+
+.code ./kafka/aboutme.yaml
+
+* Gophers
+
+.image ./common/fiveyears.jpg _ 900
+
+* Apache Kafka
+
+//Section title
+
+* Что такое Apache Kafka?
+.image ./kafka/images/kafka.png _ 600
+Apache Kafka - это распределенная система, предназначенная для потоков. Она построена как горизонтально масштабируемый, отказоустойчивый журнал коммитов и позволяет создавать распределенные потоки данных и приложения для обработки потоков.
+
+* Что такое Apache Kafka?
+
+- Разработана в LinkedIn в 2010 году, открыт исходный код в 2011
+- Спроектирована быть быстрой, масштабируемой, долговечной и высокодоступной
+- Распределенная по дизайну
+- Разделение данных (шардинг)
+- Высокая пропускная способность
+- Способность обрабатывать огромное количество потребителей
+
+* Экосистема Apache Kafka
+
+- **Kafka Core**
+  - Брокер
+  - Producer API, Consumer API, Admin API
+  - Инструменты управления
+- Kafka Connect
+- Kafka Streams API
+- Mirror Maker / Mirror Maker 2
+- REST Proxy для соединения HTTP и Kafka
+- Schema Registry
+
+* Концепции Apache Kafka - Брокеры и HA
+
+.image ./kafka/images/brokers_ha_1.png _ 800
+
+* Концепции Apache Kafka - Брокеры и HA
+
+.image ./kafka/images/brokers_ha_2.png _ 1000
+
+* Концепции Apache Kafka - Продюсеры
+
+.image ./kafka/images/producers.png _ 900
+
+* Концепции Apache Kafka - Потребители
+
+.image ./kafka/images/consumers.png _ 900
+
+* Случаи использования Apache Kafka
+
+В реальном времени ...
+
+- Обмен сообщениями
+- Отслеживание активности
+- Обработка потоков
+- Интеграция данных
+- Метрики
+- Агрегация логов
+
+* Облачная нативная Kafka: Strimzi
+
+//Section title
+
+* Облачная нативная Kafka: Strimzi
+
+.image ./kafka/images/strimzi_def.png _ 700
+
+* Почему Strimzi? Почему запускать Kafka на Kubernetes?
+
+- Упрощенное развертывание и управление
+- Масштабируемость и гибкость
+- Высокая доступность и отказоустойчивость
+- Независимость от инфраструктуры
+- Операционная эффективность
+- Бесшовная интеграция с другими инструментами экосистемы Kubernetes
+- Продуктивность разработчиков
+
+* Kubernetes нативная Kafka: Strimzi
+
+.image ./kafka/images/strimzi_arch.png _ 700
+
+* Быстрый взгляд на кластер Kafka в Kubernetes
+
+Оператор Strimzi и предварительно созданный кластер Kafka запущены в нашем локальном кластере Kubernetes в пространстве имен `default`.
+
+.play ./kafka/code/show_operator_state.go /START OMIT/,/END OMIT/
+
+Давайте быстро взглянем на кластер Kafka под названием `kafka-cluster`, используя [Strimzi Kafka CLI](https://github.com/SystemCraftsman/strimzi-kafka-cli). Другой способ - использовать YAML и `kubectl`.
+
+.play ./kafka/code/show_strimzi_cluster.go /START OMIT/,/END OMIT/
+
+* Сторона Golang
+
+//Section title
+
+* Использование Strimzi Kafka с Golang
+
+.image ./kafka/images/gopher_kafka_cook.png _ 600
+
+* Golang клиенты Kafka
+
+Некоторые популярные библиотеки Kafka для Go:
+
+- **Sarama** от Shopify
+- **Confluent Kafka Go**
+- **kafka-go** от Segment
+- **Franz-go** от Twilio
+- **Goka** от Lovoo
+
+
+* Sarama
+
+- Один из наиболее широко используемых Go клиентов для Kafka, разработанный Shopify. Сейчас поддерживается IBM.
+- Поддерживает продюсеров и потребителей Kafka, включая синхронную и асинхронную обработку.
+- Предоставляет опции конфигурации для повторов сообщений, сжатия и обработки разделов.
+- Подходит как для потребителей высокого уровня (как группы потребителей), так и для потребителей низкого уровня (разделов).
+
+Команда для включения библиотеки:
+
+.code ./kafka/code/sarama_producer.go /START1 OMIT/,/END1 OMIT/
+
+* Sarama - Продюсер
+.code ./kafka/code/sarama_producer.go /START2 OMIT/,/END2 OMIT/
+
+* Sarama - Потребитель
+.code ./kafka/code/sarama_consumer.go /START OMIT/,/END OMIT/
+
+* Confluent Kafka Go
+
+- Разработан Confluent, это Go обертка вокруг библиотеки C/C++ `librdkafka`.
+- Предоставляет расширенные возможности для Kafka, включая семантику exactly-once, которая недоступна в Sarama.
+- Идеален для корпоративных приложений с потребностью в высокой пропускной способности, низкой задержке и специфических возможностях Confluent.
+- Хорошо интегрирован с платформой Confluent и ее функциями, такими как Schema Registry.
+
+Команда для включения библиотеки:
+
+.code ./kafka/code/confluent_producer.go /START1 OMIT/,/END1 OMIT/
+
+* Confluent Kafka Go - Продюсер
+
+.code ./kafka/code/confluent_producer.go /START2 OMIT/,/END2 OMIT/
+
+* Confluent Kafka Go - Потребитель
+
+.code ./kafka/code/confluent_consumer.go /START OMIT/,/END OMIT/
+
+* kafka-go
+
+- Построен Segment, это чистая Go реализация протокола Kafka.
+- Подходит для приложений, нуждающихся в более простом API без зависимости от `librdkafka`.
+- Предлагает ключевые функциональности, такие как абстракции продюсера, потребителя и ридера, с поддержкой батчинга, сжатия и автоматического создания топиков.
+- Поддерживает распределенные приложения, такие как чтение и запись из множественных разделов.
+
+Команда для включения библиотеки:
+
+.code ./kafka/code/kafka_go_producer.go /START1 OMIT/,/END1 OMIT/
+
+* kafka-go - Продюсер
+
+.code ./kafka/code/kafka_go_producer.go /START2 OMIT/,/END2 OMIT/
+
+* kafka-go - Потребитель
+
+.code ./kafka/code/kafka_go_consumer.go /START OMIT/,/END OMIT/
+
+* franz-go
+
+- Недавняя библиотека, разработанная Twilio, которая также предоставляет чистый Go клиент Kafka.
+- Фокусируется на высокой производительности и простоте использования с поддержкой групп потребителей, транзакций и пулинга соединений.
+- Поддерживает функции Kafka 2.0+, включая лучшую обработку обновлений протокола Kafka.
+- Franz-go может быть хорошей альтернативой `kafka-go` благодаря современному подходу и надежной документации.
+
+Команда для включения библиотеки:
+
+.code ./kafka/code/franz_go_producer.go /START1 OMIT/,/END1 OMIT/
+
+* franz-go - Продюсер
+
+.code ./kafka/code/franz_go_producer.go /START2 OMIT/,/END2 OMIT/
+
+* franz-go - Потребитель
+
+.code ./kafka/code/franz_go_consumer.go /START OMIT/,/END OMIT/
+
+* Goka
+
+- Goka - это Go библиотека, специально разработанная для создания приложений обработки потоков с Kafka.
+- В отличие от универсальных клиентов Kafka, Goka больше сфокусирована на реализации концепций из Kafka Streams, что делает ее отличным выбором, если вы работаете со stateful обработкой потоков в Go.
+
+* Демо
+
+//Section title
+
+* Кофейня
+
+.image ./kafka/images/coffeeshop.jpg _ 800
+[[https://github.com/RedHatTraining/AD482-ToT-CoffeeShop]]
+
+* Кофейня - История
+
+.image ./kafka/images/coffeeshop_history_sync.png _ 700
+
+* Кофейня - История
+
+.image ./kafka/images/coffeeshop_history_async.png _ 700
+
+* Кофейня - Упрощенная
+
+.image ./kafka/images/coffeeshop_arch_diagram.png _ 1000
+
+* Создание топика
+
+Выполните следующую команду Strimzi CLI для создания топика в вашем кластере Strimzi:
+
+.play ./kafka/code/create_topic.go /START OMIT/,/END OMIT/
+
+Детали топика:
+
+.play ./kafka/code/view_topic.go /START OMIT/,/END OMIT/
+
+Откройте IDE для остальной части демо:)
+
+.play ./kafka/code/open_ide.go /START OMIT/,/END OMIT/
+
+* Источник демо
+
+.image ./kafka/images/demo_qr_code.png _ 400
+[[https://github.com/SystemCraftsman/coffeeshop-kafka-go-demo]]
+
+* РАЗНОЕ
+
+// Section title
+
+* Библиотека Golang Present
+
+.image ./kafka/images/present.png _ 700
+[[https://pkg.go.dev/golang.org/x/tools/present]]
+
+* GoKonf - 23 ноября
+
+.image ./kafka/images/go_konf.jpeg _ 700
+[[https://gokonf.com/]]
 
 
 
-*Что такое Kafka?
-
-Kafka — это система для передачи сообщений между программами. Она очень быстрая, надёжная и используется для обработки больших потоков данных.
-
-
-*Где применяется Kafka?
-
-- Сообщения между сервисами
-- Сбор логов и метрик
-- Потоковая обработка данных
-- Интеграция разных систем
-
-
-*Как работать с Kafka на Go?
-
-Есть несколько популярных библиотек:
-- Sarama
-- Confluent Kafka Go
-- kafka-go
-- franz-go
-- Goka (для потоковой обработки)
-
-
-*Пример: отправка сообщения
-
-```
-// Пример на Sarama
-producer.SendMessage(...)
-```
-
-
-*Пример: получение сообщения
-
-```
-// Пример на Sarama
-consumer.ConsumePartition(...)
-```
-
-
-*Kafka и Kubernetes
-
-Для запуска Kafka в облаке часто используют Strimzi — это оператор для Kubernetes, который упрощает установку и управление кластером Kafka.
-
-
-*Итоги
-
-- Kafka — мощный инструмент для обмена сообщениями
-- В Go есть удобные библиотеки для работы с Kafka
-- Можно легко интегрировать Kafka в свои проекты
-
-
-*Не бойтесь пробовать!
-
-Экспериментируйте с Kafka и Go — это полезный навык для современных разработчиков!
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900

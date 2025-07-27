@@ -21,64 +21,160 @@ https://github.com/RedHatOfficial/GoCourse
 
 
 
-*Что такое сериализация (marshalling)?
+* Маршаллинг и демаршаллинг
 
-Сериализация — это преобразование объекта в формат, который можно сохранить или передать по сети (например, JSON, XML, бинарный формат). Обратный процесс — десериализация (unmarshalling).
+- процесс преобразования представления объекта в памяти в формат данных, подходящий для хранения или передачи
+- демаршаллинг (размаршаллинг) выполняет обратную операцию
+- позволяет обмениваться данными между клиентом и сервером
+- промежуточное (сериализованное) представление объекта
+- маршаллинг против сериализации (мы используем сериализацию для реализации маршаллинга)
 
 
-*Основные форматы данных
 
-- JSON
+* Форматы данных
+
 - XML
-- gob (бинарный формат Go)
-- MessagePack, BSON и другие
+- JSON
+- JAXB
+- gob
+- CBOR
+- BSON
+- MessagePack
+
+- https://en.wikipedia.org/wiki/Comparison_of_data-serialization_formats
 
 
-*Сериализация в Go
 
-- Для сериализации и десериализации используются пакеты `encoding/json`, `encoding/xml`, `encoding/gob` и др.
-- Любая структура Go может быть сериализована, если её поля экспортируются (с большой буквы)
+* JSON - простые типы
+.play lesson11/json_marshal_floats.go
 
+* JSON - простые типы со специальными значениями
+.play lesson11/json_marshal_floats_specvalues.go
 
-*Пример: JSON
+* JSON - простые типы со специальными значениями (ошибка)
+.play lesson11/json_marshal_floats_specvalues_err.go
 
-```
-type User struct {
-    Name string
-    Age  int
-}
+* JSON - массивы
+.play lesson11/json_marshal_array.go
 
-b, err := json.Marshal(user)
-err = json.Unmarshal(b, &user)
-```
+* JSON - массивы (any)
+.play lesson11/json_marshal_array_any.go
 
+* JSON - карты
+.play lesson11/json_marshal_map.go
 
-*Пример: XML
+* JSON - структуры
+.play lesson11/json_marshal_struct.go
 
-```
-type User struct {
-    Name string `xml:"name"`
-    Age  int    `xml:"age"`
-}
+* JSON - структуры с отступами
+.play lesson11/json_marshal_struct_indent.go
 
-b, err := xml.Marshal(user)
-err = xml.Unmarshal(b, &user)
-```
+* JSON - имена полей структуры
+.play lesson11/json_marshal_struct_names.go
 
+* JSON - пропуск полей структуры
+.play lesson11/json_marshal_struct_names_skip.go
 
-*Другие форматы
+* JSON - демаршаллинг
+.play lesson11/json_unmarshal.go
 
-- MessagePack, BSON — для компактного хранения и передачи данных
-- gob — быстрый бинарный формат, встроен в Go
+* JSON - демаршаллинг в lowercase
+.play lesson11/json_unmarshal_lowercase.go
 
+* JSON - демаршаллинг с ошибкой
+.play lesson11/json_unmarshal_error.go
 
-*Итоги
+* JSON - функции с интерфейсами Marshal/Unmarshal
+.code lesson11/JsonMarshal.go
+.code lesson11/JsonUnmarshal.go
 
-- Go поддерживает разные форматы сериализации "из коробки"
-- Можно легко сохранять и читать данные в JSON, XML, gob и других форматах
-- Для работы с конфигами часто используют JSON или YAML
+* JSON - функции Marshal/Unmarshal с отступами
+.code lesson11/JsonMarshalIndent.go
 
+* XML - структуры
+.play lesson11/xml_marshal_struct.go
 
-*Не бойтесь пробовать!
+* XML - структуры с отступами
+.play lesson11/xml_marshal_struct_indent.go
 
-Экспериментируйте с сериализацией и разными форматами — это полезно для обмена данными между программами!
+* XML - управление именами
+.play lesson11/xml_marshal_struct_names.go
+
+* XML - XMLName
+.play lesson11/xml_marshal_xml_name.go
+
+* XML - управление маршаллингом #1
+.play lesson11/xml_marshal_control_1.go
+
+* XML - управление маршаллингом #2
+.play lesson11/xml_marshal_control_2.go
+
+* XML - управление маршаллингом #3
+.play lesson11/xml_marshal_control_3.go
+
+* XML - специальные типы #1
+.play lesson11/xml_marshal_special_types_1.go
+
+* XML - специальные типы #2
+.play lesson11/xml_marshal_special_types_2.go
+
+* XML - демаршаллинг
+.play lesson11/XMLUnmarshal.go
+
+* XML - функции с интерфейсами Marshal/Unmarshal
+.code lesson11/XMLMarshal.go
+
+* XML - функции Marshal/Unmarshal с отступами
+.code lesson11/XMLMarshalIndent.go
+
+* XML + JSON
+.play lesson11/xml_and_json.go
+
+* Gob - структуры
+.play lesson11/gob_marshal_struct.go
+
+* Gob - демаршаллинг структур
+.play lesson11/gob_unmarshal_struct.go
+
+* BSON - сериализация
+.play lesson11/bson_serialize.go
+
+* BSON - десериализация
+.play lesson11/bson_deserialize.go
+
+* MessagePack - одиночное значение
+.play lesson11/msgpack_single.go
+
+* MessagePack - небольшие целые числа
+.play lesson11/msgpack_small_int.go
+
+* MessagePack - nil
+.play lesson11/msgpack_nil.go
+
+* MessagePack - карта
+.play lesson11/msgpack_map.go
+
+* MessagePack - карта #2
+.play lesson11/msgpack_map2.go
+
+* Сравнение размеров
+.code lesson11/size_comparison.go
+
+* Binary marshal/unmarshal
+.code lesson11/BinaryMarshaler.go
+.code lesson11/BinaryUnmarshaler.go
+
+* Text marshal/unmarshal
+.code lesson11/TextMarshaler.go
+.code lesson11/TextUnmarshaler.go
+
+* Reader/Writer
+.code lesson11/Reader.go
+.code lesson11/Writer.go
+
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900

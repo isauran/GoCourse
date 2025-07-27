@@ -1,56 +1,141 @@
-Go и Python: как подружить языки
+Вызов Go из Python
 Lesson Special
-27 Jul 2025
-Tags: golang, go
+01 Jan 2023
+Tags: golang, go, python
 
-Перевод команды GoCourse
+Pavel Tišnovský
+Red Hat, Inc.
+ptisnovs@redhat.com
 https://github.com/RedHatOfficial/GoCourse
+@RedHat
 
 
 
-*Можно ли использовать Go и Python вместе?
-
-Да! Иногда нужно вызывать Go-код из Python, чтобы получить скорость Go и удобство Python.
-
-
-*Как это работает?
-
-- Go может собирать библиотеки в формате .so (Linux) или .dll (Windows)
-- Python может подключать такие библиотеки через FFI (Foreign Function Interface)
+* Sources
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
 
 
-*Пример: создаём библиотеку на Go
 
-1. Пишем функцию на Go и экспортируем её (имя с большой буквы)
-2. Собираем библиотеку:
-```
-go build -buildmode=c-shared -o mylib.so mylib.go
-```
-
-
-*Подключаем Go-библиотеку в Python
-
-В Python используем модуль `ctypes`:
-```
-import ctypes
-lib = ctypes.CDLL('./mylib.so')
-```
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
 
 
-*Важно помнить
 
-- Go и Python используют разные типы данных и сборщики мусора
-- Иногда проще обмениваться только простыми типами (int, float, строки)
-- Для сложных структур лучше использовать обмен через файлы или сеть (например, JSON)
+* Go + Python
+
+.image ./common/golang.png
+.image ./common/python.png
+
+* Два разных мира
+
+- Python поддерживает FFI, cffi, ctypes и т.д.
+- Можно скомпилировать Go библиотеку в .so/.dll
+   - интеграция кажется простой
+- Но
+   - на самом деле интеграция основана на общей основе: C
+   - разные типы данных
+   - совершенно разные структуры данных
+   - GC с обеих сторон! (разные)
+- Давайте сначала попробуем более удобные подходы
+
+* Шаг #1: как интегрировать Go с C
+
+- Go библиотека с экспортированной функцией
+- Компиляция в разделяемую библиотеку (DLL, so)
+- Загрузка библиотеки в C
+
+* Go библиотека
+
+.code go_python/example1.go
+
+* Компиляция и сборка библиотеки
+
+go build -buildmode=c-shared example1.go
+
+* Загрузка Go библиотеки из C (1/2)
+
+.code go_python/example1A.c
+
+* Загрузка Go библиотеки из C (2/2)
+
+.code go_python/example1B.c
 
 
-*Итоги
+* Компиляция и сборка
 
-- Можно вызывать Go-код из Python через FFI
-- Это удобно для ускорения "тяжёлых" вычислений
-- Для простоты лучше обмениваться только простыми типами
+gcc -ansi example1.c -ldl
+
+* Шаг 2: теперь используем Python вместо C
+
+* Системная библиотека (или LD_LIBRARY_PATH)
+
+.code go_python/example1A.py
+
+* Локальная библиотека
+
+.code go_python/example1B.py
+
+* Возможны функции `main` и `init`
+
+.code go_python/example2.go
+
+* Go функция с параметрами и возвращаемым значением
+
+.code go_python/example3.go
+
+* Вызов из Python
+
+.code go_python/example3A.py
+
+* Общие проблемы
+
+.code go_python/example3B.py
+
+.code go_python/example3C.py
+
+* Системно-независимые типы данных
+
+.code go_python/example4.go
+
+* Сторона Python
+
+.code go_python/example4A.py
+
+* Максимальные значения
+
+.code go_python/example4B.py
+
+.code go_python/example4C.py
+
+* Передача строк в Go
+
+.code go_python/example5.go
+
+* Строки на стороне Python
+
+.code go_python/example5.py
+
+* Тип `*C.char`
+
+.code go_python/example6.go
+
+* Строки на стороне Python
+
+.code go_python/example6A.py
+
+.code go_python/example6B.py
+
+.code go_python/example6C.py
 
 
-*Не бойтесь пробовать!
 
-Экспериментируйте с интеграцией Go и Python — это расширяет возможности ваших программ!
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900
