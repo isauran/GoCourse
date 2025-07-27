@@ -22,4 +22,4 @@
 | [go_worth_learning.slide](../go_worth_learning.slide) | [ru_course/go_worth_learning.slide](go_worth_learning.slide) | ✅ |
 | [benchmarks.slide](../benchmarks.slide) | [ru_course/benchmarks.slide](benchmarks.slide) | ✅ |
 | [testing.slide](../testing.slide) | [ru_course/testing.slide](testing.slide) | ✅ |
-| [kafka.slide](../kafka.slide) | [ru_course/kafka.slide](kafka.slide) | ⬜️ |
+| [kafka.slide](../kafka.slide) | [ru_course/kafka.slide](kafka.slide) | ✅ |
