@@ -4,132 +4,350 @@ Lesson 2
 Tags: golang, go
 
 Перевод команды GoCourse
+Pavel Tišnovský <ptisnovs@redhat.com>
+Red Hat, Inc.
 https://github.com/RedHatOfficial/GoCourse
+@RedHat
 
-* О чём этот урок?
+* Источники
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
 
-В этом уроке мы познакомимся с важными понятиями языка Go:
-- defer (отложенные действия)
-- структуры (struct)
-- массивы и срезы
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
+
+
+
+############################################################
+
+* Урок #2
+
+Обзор:
+
+- ключевые слова
+- операторы
+- оператор defer
+- структуры (записи)
+- массивы
+- срезы
 - указатели
-- отображения (map)
-- цикл range
-- свои типы данных
+- отображения
+- циклы с использованием range
+- пользовательские типы данных
 
 
-*Ключевые слова Go
 
-Go использует специальные слова, которые нельзя использовать для переменных:
-break, case, chan, const, continue, default, defer, else, fallthrough, for, func, go, goto, if, import, interface, map, package, range, return, select, struct, switch, type, var
+############################################################
 
+* Ключевые слова
 
-*Операторы Go
-
-Go использует знакомые операторы: +, -, *, /, %, ==, !=, <, >, <=, >=, &&, ||, =, := и другие.
-
-
-*defer — отложенные действия
-
-Иногда нужно выполнить какое-то действие в самом конце работы функции (например, закрыть файл). Для этого есть defer:
-
-```
-defer fmt.Println("Это будет выведено в самом конце функции")
-```
-
-- defer работает по принципу "стека" (последний — первый выполняется)
-- параметры для defer вычисляются сразу
+    break        default      func         interface    select
+    case         defer        go           map          struct
+    chan         else         goto         package      switch
+    const        fallthrough  if           range        type
+    continue     for          import       return       var
 
 
-*Пример defer
 
-```
-func main() {
-    fmt.Println("Начало")
-    defer fmt.Println("Конец")
-    fmt.Println("Работаем...")
-}
-```
+############################################################
 
+* Операторы и символы со специальным значением
 
-*Структуры (struct)
-
-Структура — это способ объединить несколько значений в одну переменную:
-
-```
-type Person struct {
-    Name string
-    Age  int
-}
-
-p := Person{Name: "Иван", Age: 20}
-fmt.Println(p.Name)
-```
+    +    &     +=    &=     &&    ==    !=    (    )
+    -    |     -=    |=     ||    <     <=    [    ]
+    *    ^     *=    ^=     <-    >     >=    {    }
+    /    <<    /=    <<=    ++    =     :=    ,    ;
+    %    >>    %=    >>=    --    !     ...   .    :
+         &^          &^=
 
 
-*Массивы и срезы
 
-Массив — это набор элементов одного типа фиксированной длины:
-```
-var arr [3]int = [3]int{1, 2, 3}
-```
+############################################################
 
-Срез — это "гибкий" массив, длина может меняться:
-```
-s := []int{1, 2, 3}
-s = append(s, 4)
-```
+* Оператор defer
+- `defer` — ключевое слово в языке программирования Go
+- используется для "запоминания" команд, которые будут вызваны перед `return` или выходом
+- основан на LIFO (стеке) запомненных команд
+- параметры оцениваются когда объявляется `defer` (т.е. во время выполнения)
+- (не когда вызывается указанный код)
+- возможно изменить возвращаемое значение функции через `defer`
 
 
 *Указатели
 
-Указатель — это переменная, которая хранит адрес другой переменной:
-```
-var a int = 5
-var p *int = &a
-fmt.Println(*p) // 5
-```
+* Базовое использование оператора defer
+- функция `on_finish()` вызывается перед выходом из `main()`
+.play lesson2/01_defer_basic_usage.go
 
 
-*Отображения (map)
 
-Map — это набор пар "ключ-значение":
-```
-m := make(map[string]int)
-m["один"] = 1
-fmt.Println(m["один"])
-```
+* Объявление функции в операторе defer
+- обычно определение функции является частью оператора `defer`
+- эта функция анонимная - лямбда, и обычно она также является замыканием
+- (мы поговорим о лямбдах и замыканиях в следующем уроке)
+.play lesson2/02_defer_func.go
 
 
-*Цикл range
 
-С помощью range можно перебрать элементы массива, среза или map:
-```
-for i, v := range s {
-    fmt.Println(i, v)
-}
-```
+* Объявление функции в операторе defer (продолжение)
+- скобки вокруг лямбды не обязательны
+.play lesson2/02B_defer_func.go
 
 
-*Свои типы данных
 
-Можно создавать свои типы на основе существующих:
-```
-type MyInt int
-```
+* Объявление функции с параметрами в операторе defer
+- возможно указать аргументы, передаваемые в функцию в `defer`
+.play lesson2/03_defer_with_parameters.go
 
 
-*Итоги
 
-- defer помогает выполнять действия в конце функции
-- struct объединяет данные
-- массивы и срезы — для хранения данных
-- указатели — для работы с адресами
-- map — для хранения пар ключ-значение
-- range — для перебора элементов
-- можно создавать свои типы
+* Больше операторов defer в одной функции
+- десять операторов `defer`
+- поведение LIFO
+- (проверьте во время выполнения, как это работает)
+.play lesson2/04_more_defers.go
 
 
-*Не бойтесь пробовать!
 
-Пробуйте писать код, экспериментируйте — так вы быстрее научитесь программировать!
+* Оценка аргументов defer
+- одна функция может использоваться в нескольких операторах `defer`
+- фактические параметры оцениваются во время выполнения
+- (проверьте во время выполнения)
+.play lesson2/05_defer_arguments_evaluation.go
+
+
+
+* Оценка аргументов defer (продолжение)
+.play lesson2/06_defer_arguments_evaluation.go
+
+
+
+* Defer на всех return
+- `defer` вызывается на всех return из функции
+.play lesson2/07_defer_on_all_returns.go
+
+
+
+* Практическое использование defer
+- например открытие/закрытие файла
+.play lesson2/08_defer_practical_usage.go
+
+
+
+* Практическое использование defer (2)
+.play lesson2/09_defer_practical_usage.go
+
+
+
+* Defer и возвращаемые значения
+- возможно изменить возвращаемые значения функции
+- (только если используются именованные возвращаемые значения)
+.play lesson2/10_defer_return_values.go
+
+
+
+############################################################
+
+* Структуры
+- способ группировки связанных данных
+- аналог записей в других языках
+- поля могут быть разных типов
+.play lesson2/11_struct.go
+
+
+
+* Инициализация структур
+.play lesson2/12_struct_init.go
+
+
+
+* Лучшая инициализация структур
+.play lesson2/13_better_struct_init.go
+
+
+
+* Сравнение структур
+.play lesson2/14_struct_comparison.go
+
+
+
+* Структуры - пример использования
+.play lesson2/15_print_user.go
+
+
+
+############################################################
+
+* Массивы
+- элементы одного типа
+- фиксированная длина
+- длина является частью типа массива
+.play lesson2/16_arrays.go
+
+
+
+* Массивы (2)
+.play lesson2/16B_arrays.go
+
+
+
+* Копирование массивов
+.play lesson2/17_array_copy.go
+
+
+
+############################################################
+
+* Срезы (slices)
+- динамические массивы
+- ссылка на подлежащий массив
+- тип не содержит длину
+.play lesson2/18_slices.go
+
+
+
+* Копирование срезов
+.play lesson2/19_slice_copy.go
+
+
+
+* Срез из среза
+.play lesson2/20_slice_from_slice.go
+
+
+
+* Добавление к срезу
+.play lesson2/21_slice_append.go
+
+
+
+############################################################
+
+* Указатели
+- переменные, содержащие адреса памяти
+- оператор & для получения адреса
+- оператор * для разыменования
+.play lesson2/22_pointer_to_int.go
+
+
+
+* Указатель на структуру
+.play lesson2/23_pointer_to_struct.go
+
+
+
+* Указатель на элемент структуры
+.play lesson2/24_pointer_to_struct_item.go
+
+
+
+* Указатель на массив
+.play lesson2/25_pointer_to_array.go
+
+
+
+############################################################
+
+* Неинициализированные отображения
+.play lesson2/26_uninitialized_map.go
+
+
+
+* Неинициализированные отображения - исправление
+.play lesson2/26_B_uninitialized_map.go
+
+
+
+* Инициализированные отображения
+.play lesson2/27_initialized_map.go
+
+
+
+* Инициализированные отображения (2)
+.play lesson2/27_B_initialized_map.go
+
+
+
+* Инициализированные отображения (3)
+.play lesson2/28_initialized_map.go
+
+
+
+* Отображения и структуры
+.play lesson2/29_map_and_struct.go
+
+
+
+* Отображения и структуры (2)
+.play lesson2/30_map_and_struct_B.go
+
+
+
+* Чтение из отображений
+.play lesson2/31_reading_from_maps.go
+
+
+
+* Несуществующие значения в отображениях
+.play lesson2/31_map_nonexistent_values.go
+
+
+
+* Удаление из отображения
+.play lesson2/32_delete_from_map.go
+
+
+
+############################################################
+
+* Цикл for-range (1)
+.play lesson2/33_for_range_1.go
+
+
+
+* Цикл for-range (2)
+.play lesson2/34_for_range_2.go
+
+
+
+* Цикл for-range (3)
+.play lesson2/35_for_range_3.go
+
+
+
+* Цикл for-range (4)
+.play lesson2/36_for_range_4.go
+
+
+
+* Цикл for-range с отображениями
+.play lesson2/37_for_range_map.go
+
+
+
+############################################################
+
+* Пользовательские типы
+.play lesson2/38_user_types.go
+
+
+
+* Типы как параметры функций
+.play lesson2/39_type_func_params.go
+
+
+
+* Встраивание структур
+.play lesson2/40_struct_embedding.go
+
+
+
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900

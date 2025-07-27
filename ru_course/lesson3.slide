@@ -4,126 +4,177 @@ Lesson 3
 Tags: golang, go
 
 Перевод команды GoCourse
+Pavel Tišnovský <ptisnovs@redhat.com>
+Red Hat, Inc.
 https://github.com/RedHatOfficial/GoCourse
+@RedHat
+
+* Источники
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
+
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
 
 
 
-*О чём этот урок?
+############################################################
 
-В этом уроке мы познакомимся с:
-- анонимными функциями (лямбда)
-- замыканиями (closures)
-- методами
-- интерфейсами
-- приведением типов (type assertions)
-- стандартной библиотекой Go
-- стилем "линия взгляда" (line of sight)
+* Урок #3
 
+Обзор:
 
-*Анонимные функции (лямбда)
-
-Анонимная функция — это функция без имени. Её можно сохранить в переменную или вызвать сразу:
-
-```
-f := func(x int) int {
-    return x * x
-}
-fmt.Println(f(3)) // 9
-```
+- Лямбда функции
+- Методы на типах
+- Интерфейсы
+- Приведения типов
+- Обзор стандартных библиотек
+- "Линия взгляда"
 
 
-*Где применяются лямбда-функции?
-- defer
-- go (запуск в отдельной "нитке")
-- сортировка, фильтрация
-- колбэки (обратные вызовы)
+
+############################################################
+
+* Лямбда функции
+- также известны как литералы функций
+- https://golang.org/ref/spec#Function_literals
+- могут быть присвоены переменной или вызваны напрямую
+
+* Типичные случаи использования лямбда функций
+- блоки go
+- оператор defer
+- функции обратного вызова
+- 'compare' для сортировки
 
 
-*Замыкания (closures)
 
-Замыкание — это функция, которая "запоминает" переменные из внешнего окружения:
-
-```
-func counter() func() int {
-    n := 0
-    return func() int {
-        n++
-        return n
-    }
-}
-c := counter()
-fmt.Println(c()) // 1
-fmt.Println(c()) // 2
-```
+* Функция как значение (как любое другое значение)
+.play lesson3/01_func_type.go
 
 
-*Методы
 
-Метод — это функция, "привязанная" к типу:
-
-```
-type Person struct {
-    Name string
-}
-func (p Person) SayHello() {
-    fmt.Println("Привет, меня зовут", p.Name)
-}
-```
+* Функция с параметрами как значение (как любое другое значение)
+.play lesson3/02_func_type.go
 
 
-*Интерфейсы
 
-Интерфейс — это набор методов, которые должен реализовать тип:
-
-```
-type Speaker interface {
-    SayHello()
-}
-```
-
-Если тип реализует все методы интерфейса — он подходит под этот интерфейс.
+* Функции, сохранённые в локальных переменных (просто игрушка)
+.play lesson3/03_functions_as_values.go
 
 
-*Приведение типов (type assertion)
 
-Иногда нужно узнать, какой конкретный тип "спрятан" за интерфейсом:
-
-```
-var s Speaker
-p := Person{"Иван"}
-s = p
-if person, ok := s.(Person); ok {
-    person.SayHello()
-}
-```
+* Анонимные функции (снова просто игрушка)
+.play lesson3/04_lambdas.go
 
 
-*Стандартная библиотека Go
-
-Go — это не только язык, но и большая библиотека для работы с файлами, сетью, текстом, числами и многим другим.
-
-
-*Линия взгляда (line of sight)
-
-Пишите код так, чтобы "основной путь" (happy path) был виден слева, а обработка ошибок — коротко и без вложенности:
-
-```
-if err != nil {
-    return err
-}
-// основной код
-```
+* Типы функций
+- новый тип `BinaryOp` определён
+- он используется для указания типа параметра в `applyBinaryOp`
+.play lesson3/05_function_type.go /^package main/,/^func testBinaryOps/
 
 
-*Итоги
-
-- Лямбда-функции и замыкания — мощный инструмент
-- Методы и интерфейсы — основа для ООП в Go
-- Приведение типов — для работы с интерфейсами
-- Стандартная библиотека — ваш помощник
-- Пишите код просто и понятно!
+* Типы функций (продолжение)
+.play lesson3/05_function_type.go /^func testBinaryOps/,/^}/
 
 
-*Не бойтесь пробовать!
 
-Экспериментируйте, пишите свои функции и типы — так вы быстрее освоите Go!
+* Практическое применение для функций в Go - сортировка
+.play lesson3/06_sort_function.go
+
+
+
+* Практическое применение для функций в Go - замыкания
+.play lesson3/07_sort_closure.go
+
+
+
+* Сортировка по произвольным критериям
+.play lesson3/08_sort_by.go
+
+
+
+############################################################
+
+* Методы
+- функции с получателем
+- получатель указывается между ключевым словом `func` и именем функции
+.play lesson3/09_methods.go
+
+
+
+* Методы с параметрами
+.play lesson3/10_methods_with_parameters.go
+
+
+
+* Методы с получателем-указателем
+.play lesson3/11_methods_ptr.go
+
+
+
+* Методы с получателем-указателем (2)
+.play lesson3/11_methods_ptr_2.go
+
+
+
+* Больше методов
+.play lesson3/12_more_methods.go
+
+
+
+############################################################
+
+* Интерфейсы
+.play lesson3/13_interface.go
+
+
+
+* Невыполнение интерфейса
+.play lesson3/14_interface_missing_implementation.go
+
+
+
+* Выполнение интерфейса через методы
+.play lesson3/15_interface_implementation_via_methods.go
+
+
+
+* Больше реализаций интерфейсов
+.play lesson3/16_more_interface_implementations.go
+
+
+
+* Пустой интерфейс
+.play lesson3/17_empty_interface.go
+
+
+
+* Загадка nil интерфейса
+.play lesson3/18_nil_interface_riddle.go
+
+
+
+* Приведения типов
+.play lesson3/19_type_assertions.go
+
+
+
+* Три nil интерфейса
+.play lesson3/20_three_nil_interfaces.go
+
+
+
+* nil получатель
+.play lesson3/21_nil_receiver.go
+
+
+
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900

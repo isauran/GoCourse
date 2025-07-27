@@ -4,7 +4,20 @@ Lesson 1
 Tags: golang, go
 
 Перевод команды GoCourse
+Stanislav Kozina <skozina@redhat.com>
+Jakub Čajka <jcajka@redhat.com>
+Red Hat, Inc.
 https://github.com/RedHatOfficial/GoCourse
+
+* Источники
+- [[https://github.com/RedHatOfficial/GoCourse]]
+.image ./common/qr_address.png
+
+* Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/fiveyears.jpg
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/fiveyears.jpg _ 900
 
 * Введение
 
@@ -16,137 +29,155 @@ Go — это язык программирования, созданный в G
 - Облачные технологии (например, Docker, Kubernetes)
 - Быстрые и надёжные программы
 
+* Ресурсы
+- Тур по Go [[https://tour.golang.org/welcome/1]]
+- Effective Go [[https://golang.org/doc/effective_go.html]]
+- Go Doc [[https://godoc.org/]]
+- Справочник Go [[http://www.cheat-sheets.org/saved-copy/go-lang-cheat-sheet-master.20181212/golang_refcard.pdf]]
+- The Zen of Go [[https://the-zen-of-go.netlify.app/]]
+
+
+
+* Среда разработки
+- Vim;-)
+- Visual Studio Code + поддержка go [[https://code.visualstudio.com/docs/setup/linux]]
+- GoLand от JetBrains
+
+
+
 * Ключевые слова Go
 
-В Go есть специальные слова, которые нельзя использовать для названий переменных:
+  break     case   chan    const       continue
+  default   defer  else    fallthrough for
+  func      go     goto    if          import
+  interface map    package range       return
+  select    struct switch  type        var
 
-break, case, chan, const, continue, default, defer, else, fallthrough, for, func, go, goto, if, import, interface, map, package, range, return, select, struct, switch, type, var
+
 
 * Пакеты и импорты
 
 - Программы Go состоят из пакетов (библиотек)
 - Чтобы использовать чужой код, его нужно импортировать
-- Стандартные пакеты уже есть в Go
+- Имя пакета — это последний элемент пути импорта
+- Стандартные пакеты: [[https://golang.org/pkg/]]
 
-* Пример: Hello, world!
+.code lesson1/packages.go
 
-```
-package main
-import "fmt"
-func main() {
-    fmt.Println("Привет, мир!")
-}
-```
+* Hello world
+.play lesson1/hello.go
+.code lesson1/run_hello.go
+.code lesson1/build_hello.go
 
-* Как запускать программы
+* Поддержка Unicode
+.play lesson1/hello_u.go
 
-1. Скопируйте код в файл, например, `main.go`
-2. Откройте терминал и перейдите в папку с этим файлом
-3. Введите команду:
-```
-go run main.go
-```
+* Пакеты
+- специальный пакет main: main() для исполняемых файлов
+- Рабочее пространство определяется $GOPATH
+- Структура для библиотек, бинарных файлов: src, bin
 
-* Unicode и поддержка русского языка
+* go-fmt
+.play lesson1/gofmt1.go
+.code lesson1/gofmt.go
+.play lesson1/gofmt2.go
 
-Go отлично работает с разными языками, в том числе с русским.
+* Синтаксис
 
-* Форматирование кода
+- Произошёл от C
+- Объявления в постфиксной записи
+- Экспортируемые символы начинаются с заглавной буквы
+- [[https://blog.golang.org/gos-declaration-syntax]]
 
-Go сам расставляет отступы и пробелы. Для этого есть команда:
-```
-go fmt имя_файла.go
-```
-
-* Синтаксис Go
-
-- Похож на C, но проще
-- Все объявления пишутся после имени
-- Если имя начинается с большой буквы — оно видно из других файлов
+.code lesson1/syntax_c.go
+.code lesson1/syntax_go.go
 
 * Функции
+.play lesson1/functions.go
 
-В Go можно возвращать несколько значений из функции:
+* Множественные возвращаемые значения
+.play lesson1/functions2.go
 
-```
-func sumAndDiff(a int, b int) (int, int) {
-    return a+b, a-b
-}
-```
+* Множественные возвращаемые значения
+.play lesson1/functions2B.go
 
-* Переменные и типы
+* Именованные возвращаемые значения
+.play lesson1/functions3.go
 
-- Типы похожи на C
-- Нет автоматических преобразований типов
-- Есть вывод типа (type inference)
-- У каждой переменной есть "нулевое значение" (0, false, "")
+* Переменные
+.play lesson1/vars.go
+
+* Типы
+- Похожи на C
+- Нет автоматических преобразований
+- Вывод типа && типы по умолчанию
+- У каждого типа есть четкое нулевое значение (0, false, "")
+.code lesson1/types.go
+
+* Вне базовых типов
+- math.big/Int
+- math.big/Rat
+- math.big/Float
 
 * Преобразование типов
-
-Чтобы поменять тип, нужно явно указать новый тип:
-```
-var x int = 5
-var y float64 = float64(x)
-```
+- Нет автоматических преобразований
+.play lesson1/casts.go
 
 * Константы
-
-Константы — это значения, которые нельзя изменить:
-```
-const Pi = 3.14
-```
+.play lesson1/const.go
 
 * Циклы
+- Только цикл for, который также служит как цикл while
+.play lesson1/for.go
 
-В Go есть только один цикл — for. Он может работать как while:
-```
-for i := 0; i < 5; i++ {
-    fmt.Println(i)
-}
-```
+* Циклы
+- ключевое слово break
+- ключевое слово continue
 
 * Условия
+- Как и в цикле for позволяет инициализирующее выражение
+- Переменные, объявленные там, не существуют вне блока if
+.play lesson1/if.go
 
-```
-if x > 0 {
-    fmt.Println("x положительный")
-} else {
-    fmt.Println("x не положительный")
-}
-```
+* Выражение else
+- Переменные, объявленные в инициализирующем выражении, существуют в блоке else
+.play lesson1/if2.go
 
-* Switch
+* Выражение switch
+- Опять же позволяет инициализирующее выражение
+- Как набор выражений if-else
+- Оценивается сверху вниз, выполняется первый успешный case
+- Поэтому нет выражения break
+.play lesson1/switch.go
 
-Switch — это удобная замена множеству if-else:
-```
-switch day {
-case "понедельник":
-    fmt.Println("Начало недели")
-default:
-    fmt.Println("Другой день")
-}
-```
+* Выражение switch 2
+- Позволяет неконстантные и неинтеговые значения
+.play lesson1/switch2.go
 
-* Ошибки
+* Switch без условия
+- switch без условия как switch true
+.play lesson1/switch3.go
 
-В Go есть специальный тип error. Если функция может вернуть ошибку, её нужно обработать:
-```
-result, err := someFunc()
-if err != nil {
-    fmt.Println("Произошла ошибка:", err)
-}
-```
+* Обработка ошибок
+- error — встроенный тип
+[[https://blog.golang.org/error-handling-and-go]]
+.play lesson1/ret.go
+
+* Игнорирование возвращаемых значений
+- идиома '_' может использоваться для отбрасывания возвращаемых значений
+.play lesson1/ret2.go
 
 * Полезные ссылки
 
-- Тур по Go: https://tour.golang.org/welcome/1
-- Документация: https://golang.org/doc/
-- Справочник: https://golang.org/pkg/
+The Why of Go (многое о Go в контексте)
+[[https://www.youtube.com/watch?v=bmZNaUcwBt4&list=WL]]
 
-* Не бойтесь ошибок!
+GothamGo 2018 - Things in Go I Never Use by Mat Ryer
+[[https://www.youtube.com/watch?v=5DVV36uqQ4E]]
 
-Ошибки — это нормально. Учиться на ошибках — лучший способ понять программирование.
-
-* Вперёд!
-
-Пробуйте, экспериментируйте, и у вас всё получится!
+#last slide
+* Больше Gophers
+#The Go gopher was designed by Renee French. (http://reneefrench.blogspot.com/)
+#Source https://golang.org/doc/gopher/bumper.png
+#The design and this image is licensed under the Creative Commons 3.0 Attributions license.
+.image ./common/bumper.png  _ 900
