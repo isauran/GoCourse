@@ -16,7 +16,7 @@
 | [lesson8.slide](../lesson8.slide) | [ru_course/lesson8.slide](lesson8.slide) | ✅ |
 | [lesson9.slide](../lesson9.slide) | [ru_course/lesson9.slide](lesson9.slide) | ✅ |
 | [lesson10.slide](../lesson10.slide) | [ru_course/lesson10.slide](lesson10.slide) | ✅ |
-| [lesson11.slide](../lesson11.slide) | [ru_course/lesson11.slide](lesson11.slide) | ⬜️ |
+| [lesson11.slide](../lesson11.slide) | [ru_course/lesson11.slide](lesson11.slide) | ✅ |
 | [go_performance.slide](../go_performance.slide) | [ru_course/go_performance.slide](go_performance.slide) | ⬜️ |
 | [go_python.slide](../go_python.slide) | [ru_course/go_python.slide](go_python.slide) | ⬜️ |
 | [go_worth_learning.slide](../go_worth_learning.slide) | [ru_course/go_worth_learning.slide](go_worth_learning.slide) | ⬜️ |
