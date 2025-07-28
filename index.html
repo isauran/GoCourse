@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Course - Language Selection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 60px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: #00ADD8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 50px;
+        }
+        
+        .language-options {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .language-card {
+            background: linear-gradient(145deg, #f0f8ff, #e6f3ff);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            min-width: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .language-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border-color: #00ADD8;
+        }
+        
+        .language-card.english {
+            background: linear-gradient(145deg, #f0f8ff, #e6f3ff);
+        }
+        
+        .language-card.russian {
+            background: linear-gradient(145deg, #fff0f0, #ffe6e6);
+        }
+        
+        .language-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        .language-card:hover::before {
+            opacity: 1;
+            animation: shine 0.6s ease-in-out;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .flag {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .language-name {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .language-desc {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .presentation-count {
+            background: #00ADD8;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            color: #999;
+            font-size: 0.9em;
+        }
+        
+        .github-link {
+            color: #00ADD8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .github-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 30px;
+            }
+            
+            .language-options {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .language-card {
+                min-width: auto;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">Go</div>
+        
+        <h1>Go Programming Course</h1>
+        <p class="subtitle">Choose your preferred language / Выберите предпочитаемый язык</p>
+        
+        <div class="language-options">
+            <a href="presentations/en/" class="language-card english">
+                <span class="flag">🇺🇸</span>
+                <div class="language-name">English</div>
+                <div class="language-desc">Complete Go programming course</div>
+                <span class="presentation-count" id="en-count">Loading...</span>
+            </a>
+            
+            <a href="presentations/ru/" class="language-card russian">
+                <span class="flag">🇷🇺</span>
+                <div class="language-name">Русский</div>
+                <div class="language-desc">Полный курс программирования на Go</div>
+                <span class="presentation-count" id="ru-count">Loading...</span>
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>Open source course available on <a href="https://github.com/RedHatOfficial/GoCourse" class="github-link">GitHub</a></p>
+        </div>
+    </div>
+    
+    <script>
+        // Count presentations for each language
+        fetch('/presentations/en/')
+            .then(response => response.text())
+            .then(data => {
+                const matches = data.match(/\.slide/g);
+                const count = matches ? matches.length : 0;
+                document.getElementById('en-count').textContent = count + ' presentations';
+            })
+            .catch(() => {
+                document.getElementById('en-count').textContent = 'Available';
+            });
+            
+        fetch('/presentations/ru/')
+            .then(response => response.text())
+            .then(data => {
+                const matches = data.match(/\.slide/g);
+                const count = matches ? matches.length : 0;
+                document.getElementById('ru-count').textContent = count + ' презентаций';
+            })
+            .catch(() => {
+                document.getElementById('ru-count').textContent = 'Доступно';
+            });
+    </script>
+</body>
+</html>

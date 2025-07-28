@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Course</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: #00ADD8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .title {
+            color: #333;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #00ADD8;
+        }
+        
+        .lang-switch {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 25px;
+            padding: 5px;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .lang-switch a {
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #666;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .lang-switch a.active {
+            background: #00ADD8;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        
+        .presentations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .presentation-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .presentation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border-color: #00ADD8;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #00ADD8, #0087a8);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.3;
+        }
+        
+        .card-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .card-type {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        
+        .card-arrow {
+            color: #00ADD8;
+            font-size: 1.2em;
+        }
+        
+        .section-title {
+            color: white;
+            font-size: 2em;
+            font-weight: 300;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .search-box {
+            background: white;
+            border-radius: 25px;
+            padding: 15px 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .search-box input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 1.1em;
+            color: #333;
+        }
+        
+        .search-box input::placeholder {
+            color: #999;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .presentations-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">Go</div>
+                <div class="title">Go Programming Course</div>
+            </div>
+            <div class="nav-links">
+                <a href="../">← Back to Home</a>
+                <div class="lang-switch">
+                    <a href="../en/" class="active">🇺🇸 EN</a>
+                    <a href="../ru/">🇷🇺 RU</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1 class="section-title">Go Course</h1>
+        <p class="section-subtitle">Complete Go programming course with hands-on examples</p>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search presentations..." onkeyup="filterPresentations()">
+        </div>
+        
+        <div class="presentations-grid" id="presentationsGrid">
+            <!-- Presentations will be loaded dynamically -->
+        </div>
+    </div>
+    
+    <script>
+        const presentations = [
+            {
+                file: "lesson1.slide",
+                title: "Lesson 1: Introduction to Go",
+                description: "Getting started with Go programming language, basic syntax, and Hello World",
+                icon: "1",
+                type: "Lesson"
+            },
+            {
+                file: "lesson2.slide",
+                title: "Lesson 2: Variables and Types",
+                description: "Understanding Go's type system, variables, constants, and basic data types",
+                icon: "2",
+                type: "Lesson"
+            },
+            {
+                file: "lesson3.slide",
+                title: "Lesson 3: Control Structures",
+                description: "If statements, loops, switch cases, and control flow in Go",
+                icon: "3",
+                type: "Lesson"
+            },
+            {
+                file: "lesson4.slide",
+                title: "Lesson 4: Functions",
+                description: "Function definitions, parameters, return values, and function types",
+                icon: "4",
+                type: "Lesson"
+            },
+            {
+                file: "lesson5.slide",
+                title: "Lesson 5: Arrays and Slices",
+                description: "Working with arrays, slices, and slice operations in Go",
+                icon: "5",
+                type: "Lesson"
+            },
+            {
+                file: "lesson6.slide",
+                title: "Lesson 6: Maps",
+                description: "Understanding maps, key-value pairs, and map operations",
+                icon: "6",
+                type: "Lesson"
+            },
+            {
+                file: "lesson7.slide",
+                title: "Lesson 7: Structs and Methods",
+                description: "Defining structs, methods, and object-oriented programming in Go",
+                icon: "7",
+                type: "Lesson"
+            },
+            {
+                file: "lesson8.slide",
+                title: "Lesson 8: Interfaces",
+                description: "Interface types, implementation, and polymorphism in Go",
+                icon: "8",
+                type: "Lesson"
+            },
+            {
+                file: "lesson9.slide",
+                title: "Lesson 9: Error Handling",
+                description: "Error handling patterns, custom errors, and best practices",
+                icon: "9",
+                type: "Lesson"
+            },
+            {
+                file: "lesson10.slide",
+                title: "Lesson 10: Concurrency",
+                description: "Goroutines, channels, and concurrent programming patterns",
+                icon: "10",
+                type: "Lesson"
+            },
+            {
+                file: "lesson11.slide",
+                title: "Lesson 11: Advanced Topics",
+                description: "Advanced Go concepts, reflection, and performance optimization",
+                icon: "11",
+                type: "Lesson"
+            },
+            {
+                file: "go_primer.slide",
+                title: "Go Primer",
+                description: "Quick introduction and primer to Go programming language",
+                icon: "📚",
+                type: "Primer"
+            },
+            {
+                file: "go_performance.slide",
+                title: "Go Performance",
+                description: "Performance optimization, profiling, and benchmarking in Go",
+                icon: "⚡",
+                type: "Performance"
+            },
+            {
+                file: "go_worth_learning.slide",
+                title: "Why Go is Worth Learning",
+                description: "Benefits of Go, use cases, and why you should learn Go",
+                icon: "💡",
+                type: "Overview"
+            },
+            {
+                file: "go_python.slide",
+                title: "Go vs Python",
+                description: "Comparison between Go and Python programming languages",
+                icon: "⚖️",
+                type: "Comparison"
+            },
+            {
+                file: "benchmarks.slide",
+                title: "Benchmarks",
+                description: "Performance benchmarks and testing methodologies",
+                icon: "📊",
+                type: "Benchmarks"
+            },
+            {
+                file: "testing.slide",
+                title: "Testing",
+                description: "Unit testing, integration testing, and testing best practices",
+                icon: "🧪",
+                type: "Testing"
+            },
+            {
+                file: "kafka.slide",
+                title: "Kafka with Go",
+                description: "Working with Apache Kafka using Go programming language",
+                icon: "📨",
+                type: "Integration"
+            }
+        ];
+        
+        function renderPresentations(presentationsToRender = presentations) {
+            const grid = document.getElementById('presentationsGrid');
+            grid.innerHTML = '';
+            
+            presentationsToRender.forEach(presentation => {
+                const card = document.createElement('a');
+                card.className = 'presentation-card';
+                card.href = `../../${presentation.file}`;
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-icon">${presentation.icon}</div>
+                        <div class="card-title">${presentation.title}</div>
+                    </div>
+                    <div class="card-description">${presentation.description}</div>
+                    <div class="card-meta">
+                        <span class="card-type">${presentation.type}</span>
+                        <span class="card-arrow">→</span>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+        
+        function filterPresentations() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = presentations.filter(presentation =>
+                presentation.title.toLowerCase().includes(searchTerm) ||
+                presentation.description.toLowerCase().includes(searchTerm) ||
+                presentation.type.toLowerCase().includes(searchTerm)
+            );
+            renderPresentations(filtered);
+        }
+        
+        // Initial render
+        renderPresentations();
+    </script>
+</body>
+</html>
