@@ -72,13 +72,15 @@ https://github.com/RedHatOfficial/GoCourse
 - используйте осторожно
 
 * CGO - пример
-.code lesson5/cgo-inlinec/main.go HLcgo
+.code lesson5/cgo-inlinec/cgo-inlinec.go HLcgo
 
 * CGO - пример
-.code lesson5/cgo-strings/main.go
+.code lesson5/cgo-strings/cgo-string.go /memory management/,/memory management end/
 
 * CGO - Math test and benchmark
-.code lesson5/cgo-math-test-bench/main.go
+.code lesson5/cgo-math-test-bench/cgo-math_test.go /T1/,/T1/
+.code lesson5/cgo-math-test-bench/cgo-math_test.go /T2/,/T2/
+.code lesson5/cgo-math-test-bench/cgo-math_test.go /benchmark/,/benchmark/
 
 #last slide
 * Больше Gophers
