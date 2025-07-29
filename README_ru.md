@@ -1,28 +1,25 @@
-# Курс языка Go (перевод для начинающих)
+# Курс языка Go
 
-Этот курс предназначен для тех, кто только начинает изучать программирование, и выбрал Go своим первым языком. Здесь вы найдёте простые объяснения и примеры.
+[![Go Report Card](https://goreportcard.com/badge/github.com/RedHatOfficial/GoCourse)](https://goreportcard.com/report/github.com/RedHatOfficial/GoCourse)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/RedHatOfficial/GoCourse)
 
-## Как начать
+Этот репозиторий содержит материалы курса языка Go в формате Go [present](https://godoc.org/golang.org/x/tools/present). Чтобы просмотреть слайды, запустите команду present в корневой директории.
 
-1. Установите Go с официального сайта: https://go.dev/dl/
-2. Скачайте этот курс или откройте его на GitHub.
-3. Для просмотра слайдов используйте команду:
+## Пошаговое руководство для просмотра слайдов локально
+
+Предполагается, что у вас установлены и добавлены в $PATH компилятор go и git.
 
 ```shell
+git clone https://github.com/RedHatOfficial/GoCourse.git
 cd GoCourse
-# Запуск презентации
-# Откройте браузер и перейдите по адресу http://localhost:3999
-# Для завершения работы нажмите Ctrl+C
-
-go run golang.org/x/tools/cmd/present -http=:3999 -play=false
+go run golang.org/x/tools/cmd/present
 ```
 
-## О курсе
+После этого подключитесь браузером к указанному адресу. Для остановки сервера используйте Ctrl+C.
 
-- Каждый урок — это отдельный файл с расширением `.slide`.
-- В уроках много примеров и заданий.
-- Не бойтесь экспериментировать и пробовать писать свой код!
+## Предоставление доступа к слайдам другим людям
 
-## Обратная связь
-
-Если что-то непонятно — пишите вопросы, мы поможем!
+Возможно запустить службу, которая раздаёт слайды другим компьютерам через HTTP.
+```shell
+go run golang.org/x/tools/cmd/present -http=:3999 -play=false
+```
