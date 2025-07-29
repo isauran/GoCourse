@@ -22,7 +22,7 @@ func main() {
 
 	// Запускаем Go present на внутреннем порту
 	fmt.Println("🚀 Starting Go present server on internal port", presentPort)
-	cmd := exec.Command("go", "run", "golang.org/x/tools/cmd/present", "-http=:"+presentPort, "-play=false")
+	cmd := exec.Command("go", "tool", "present", "-http=:"+presentPort, "-play=false")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	go func() {
